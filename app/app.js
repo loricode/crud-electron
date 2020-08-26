@@ -15,6 +15,10 @@ let listaLibro = []
                          <td>${ item.id }</td>
                          <td>${ item.nombre }</td>
                          <td>${ item.edicion }</td>
+                         <td><button onclick="deleteLibro(${item.id})"
+                                     class="btn btn-danger">
+                              Delete</button>
+                         </td>
                         <tr>
                       `; }) //fin del forEach
        tabla.innerHTML = plantilla 
@@ -33,9 +37,19 @@ function guardar(){
     headers:{ 'Content-Type': 'application/json' }})
    .then(res => res.json())
    .catch(error => console.error('Error:', error))
-   .then(response => { console.log('Success:', response)
+   .then(response => { console.log(response)
     getLibros()
     idEdicion.value=''
     idNombre.value=''});
-   
 }
+
+function deleteLibro(id){
+  console.log(id)
+  fetch(`http://localhost/apilibro/?id=${id}`,{ method:'DELETE'})
+  .then( response => { return response.json() })
+  .then( response => {
+     console.log(response) 
+     getLibros()  
+  }) 
+}
+
